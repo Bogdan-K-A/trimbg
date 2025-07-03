@@ -122,65 +122,6 @@ const Header = () => {
                     )}
                   </div>
                 );
-                // Ссылка на /price
-                // if (item.href === "/price") {
-                //   return (
-                //     <Link
-                //       key={item.id}
-                //       href={item.href}
-                //       className="cursor-pointer flex items-center space-x-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-purple-600/20 rounded-lg transition-all duration-200"
-                //     >
-                //       <Icon className="w-4 h-4" />
-                //       <span className="text-sm font-medium">{item.label}</span>
-                //     </Link>
-                //   );
-                // }
-
-                // // На главной — scroll, на других страницах — переход на #якорь
-                // if (isHome) {
-                //   return (
-                //     <button
-                //       key={item.id}
-                //       onClick={() => scrollToSection(item.id)}
-                //       className="cursor-pointer flex items-center space-x-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-purple-600/20 rounded-lg transition-all duration-200"
-                //     >
-                //       <Icon className="w-4 h-4" />
-                //       <span className="text-sm font-medium">{item.label}</span>
-                //     </button>
-                //   );
-                // }
-
-                // return (
-                //   <Link
-                //     key={item.id}
-                //     href={`/#${item.id}`}
-                //     className="cursor-pointer flex items-center space-x-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-purple-600/20 rounded-lg transition-all duration-200"
-                //   >
-                //     <Icon className="w-4 h-4" />
-                //     <span className="text-sm font-medium">{item.label}</span>
-                //   </Link>
-                // );
-
-                // =========================================
-                // return item.link ? (
-                //   <Link
-                //     key={item.id}
-                //     href={item.href}
-                //     className=" cursor-pointer flex items-center space-x-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-purple-600/20 rounded-lg transition-all duration-200"
-                //   >
-                //     <Icon className="w-4 h-4" />
-                //     <span className="text-sm font-medium">{item.label}</span>
-                //   </Link>
-                // ) : (
-                //   <button
-                //     key={item.id}
-                //     onClick={() => scrollToSection(item.id)}
-                //     className=" cursor-pointer flex items-center space-x-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-purple-600/20 rounded-lg transition-all duration-200"
-                //   >
-                //     <Icon className="w-4 h-4" />
-                //     <span className="text-sm font-medium">{item.label}</span>
-                //   </button>
-                // );
               })}
 
               {/* Language Selector */}
@@ -238,56 +179,41 @@ const Header = () => {
         {menuOpen && (
           <div className="md:hidden bg-gray-900/95 backdrop-blur-md border-t border-purple-800/30">
             <div className="px-6 py-4 space-y-2">
-              {menuItems.map((item) => {
+              {menuItems.map((item, i) => {
                 const Icon = item.icon;
-                // Ссылка на /price
-                if (item.href === "/price") {
-                  return (
-                    <Link
-                      key={item.id}
-                      href={item.href}
-                      className="cursor-pointer flex items-center space-x-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-purple-600/20 rounded-lg transition-all duration-200"
-                    >
-                      <Icon className="w-4 h-4" />
-                      <span className="text-sm font-medium">{item.label}</span>
-                    </Link>
-                  );
-                }
-
-                // На главной — scroll, на других страницах — переход на #якорь
-                if (isHome) {
-                  return (
-                    <button
-                      key={item.id}
-                      onClick={() => scrollToSection(item.id)}
-                      className="cursor-pointer flex items-center space-x-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-purple-600/20 rounded-lg transition-all duration-200"
-                    >
-                      <Icon className="w-4 h-4" />
-                      <span className="text-sm font-medium">{item.label}</span>
-                    </button>
-                  );
-                }
-
+                const href =
+                  item.type === "link" ? `/${item.to}` : `#${item.to}`;
                 return (
-                  <Link
-                    key={item.id}
-                    href={`/#${item.id}`}
-                    className="cursor-pointer flex items-center space-x-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-purple-600/20 rounded-lg transition-all duration-200"
-                  >
-                    <Icon className="w-4 h-4" />
-                    <span className="text-sm font-medium">{item.label}</span>
-                  </Link>
+                  <div key={i}>
+                    {item.type === "link" ? (
+                      <Link
+                        href={href}
+                        className="cursor-pointer flex items-center space-x-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-purple-600/20 rounded-lg transition-all duration-200"
+                        onClick={() => setMenuOpen(!menuOpen)}
+                      >
+                        <Icon className="w-4 h-4" />
+
+                        <span className="text-sm font-medium">
+                          {item.label}
+                        </span>
+                      </Link>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setMenuOpen(!menuOpen);
+                          handleScrollLinkClick(item.to, router);
+                        }}
+                        className="cursor-pointer flex items-center space-x-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-purple-600/20 rounded-lg transition-all duration-200"
+                      >
+                        <Icon className="w-4 h-4" />
+
+                        <span className="text-sm font-medium">
+                          {item.label}
+                        </span>
+                      </button>
+                    )}
+                  </div>
                 );
-                // return (
-                //   <button
-                //     key={item.id}
-                //     onClick={() => scrollToSection(item.id)}
-                //     className="flex items-center space-x-3 w-full px-3 py-3 text-gray-300 hover:text-white hover:bg-purple-600/20 rounded-lg transition-all duration-200"
-                //   >
-                //     <Icon className="w-5 h-5" />
-                //     <span className="font-medium">{item.label}</span>
-                //   </button>
-                // );
               })}
 
               {/* Mobile Language Selector */}
