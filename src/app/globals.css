@@ -24,3 +24,20 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+@layer utilities {
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: #1e1e2f;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #ad46ff;
+    /* background-color: #8884d8; */
+    border-radius: 4px;
+  }
+}
