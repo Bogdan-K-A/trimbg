@@ -1,3 +1,4 @@
+//скрол при переходе на главную с другой страницы
 export const handleScrollLinkClick = (sectionId, router) => {
   const isHome = location.pathname === "/";
 

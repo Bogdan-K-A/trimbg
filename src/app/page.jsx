@@ -15,14 +15,6 @@ import VideoSection from "@/components/VideoSection";
 import ExamplesSection from "@/components/ExamplesSection";
 import transliterate from "@/utils/transliterate";
 
-// соответствие расширения → MIME‑типа, чтобы браузер знал «какую картинку» рисовать
-const extToMime = {
-  jpg: "image/jpeg",
-  jpeg: "image/jpeg",
-  png: "image/png",
-  webp: "image/webp",
-};
-
 export default function Home() {
   /* ------------------------ Состояния ------------------------ */
 
@@ -30,7 +22,6 @@ export default function Home() {
   const [progress, setProgress] = useState(0); // 0–100
   // =========================================
   const [images, setImages] = useState([]);
-  // const [isCancelled, setIsCancelled] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -141,6 +132,7 @@ export default function Home() {
       for (let i = 0; i < images.length; i += batchSize) {
         if (isCancelled.current) {
           console.log("⏹️ Обработка остановлена пользователем");
+          alert("⏹️ Обработка остановлена пользователем");
           break; // полностью прерываем цикл
         }
 
@@ -161,7 +153,7 @@ export default function Home() {
         abortControllerRef.current = new AbortController();
 
         const response = await axios.post(
-          "http://localhost:4000/process",
+          "http://localhost:4000/api/process",
           form,
           {
             headers: { "Content-Type": "multipart/form-data" },
@@ -221,9 +213,12 @@ export default function Home() {
         .map((f) => f.processedName);
 
       if (processedNames.length) {
-        const zipRes = await axios.post("http://localhost:4000/generate-zip", {
-          files: processedNames,
-        });
+        const zipRes = await axios.post(
+          "http://localhost:4000/api/generate-zip",
+          {
+            files: processedNames,
+          }
+        );
         zipRef.current = zipRes.data.zipUrl;
       }
 
@@ -239,14 +234,21 @@ export default function Home() {
       ) {
         console.warn("🚫 Запрос отменён пользователем");
       } else {
-        alert(err.response?.data?.error ?? err.message);
+        alert("Сервер накрылся 1");
+        // alert(err.response?.data?.error ?? err.message);
       }
 
       Object.values(simulatedProgress.current).forEach(clearInterval);
       simulatedProgress.current = {};
       setProgress(0);
       setIsProcessing(false);
-      alert("⏹️ Обработка остановлена пользователем");
+
+      // alert("⏹️ Обработка остановлена пользователем");
+      if (isCancelled.current) {
+        alert("⏹️ Обработка остановлена пользователем");
+      } else {
+        alert("Сервер накрылся 2");
+      }
       // alert(err.response?.data?.error ?? err.message);
     }
   };

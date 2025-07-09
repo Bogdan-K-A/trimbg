@@ -10,7 +10,8 @@ export default function ImageCard({ image, removeImage }) {
   const getImageSrc = () => {
     //   показывает фотку до/после
     if (image.status === "completed" && showAfter && image.processed) {
-      return image.processed;
+      return `http://localhost:4000${image.processed}`;
+      // return image.processed;
     }
     return image.original;
   };
@@ -22,23 +23,25 @@ export default function ImageCard({ image, removeImage }) {
     }
 
     try {
-      const response = await axios.get(image.processed, {
+      // Убедимся, что путь абсолютный
+      const fileUrl = image.processed.startsWith("http")
+        ? image.processed
+        : `http://localhost:4000${image.processed}`; // 👈 меняем порт
+
+      const response = await axios.get(fileUrl, {
         responseType: "blob",
       });
 
       const blob = response.data;
       const url = URL.createObjectURL(blob);
 
-      // Получаем расширение из URL
-      const extensionMatch = image.processed.match(
-        /\.(png|jpe?g|webp)(?=\?|$)/i
-      );
+      // Получаем расширение из URL (без query)
+      const cleanUrl = fileUrl.split("?")[0];
+      const extensionMatch = cleanUrl.match(/\.(png|jpe?g|webp)$/i);
       const ext = extensionMatch ? extensionMatch[0] : ".png";
-      console.log("ext", ext);
 
       // Удаляем оригинальное расширение из имени
       const baseName = image.name.replace(/\.[^/.]+$/, "");
-      console.log("baseName", baseName);
 
       const link = document.createElement("a");
       link.href = url;
@@ -53,6 +56,45 @@ export default function ImageCard({ image, removeImage }) {
       alert("Не удалось скачать изображение");
     }
   };
+
+  // const downloadOneImg = async () => {
+  //   if (!image.processed) {
+  //     alert("Файл не готов для скачивания");
+  //     return;
+  //   }
+
+  //   try {
+  //     const response = await axios.get(image.processed, {
+  //       responseType: "blob",
+  //     });
+
+  //     const blob = response.data;
+  //     const url = URL.createObjectURL(blob);
+
+  //     // Получаем расширение из URL
+  //     const extensionMatch = image.processed.match(
+  //       /\.(png|jpe?g|webp)(?=\?|$)/i
+  //     );
+  //     const ext = extensionMatch ? extensionMatch[0] : ".png";
+  //     console.log("ext", ext);
+
+  //     // Удаляем оригинальное расширение из имени
+  //     const baseName = image.name.replace(/\.[^/.]+$/, "");
+  //     console.log("baseName", baseName);
+
+  //     const link = document.createElement("a");
+  //     link.href = url;
+  //     link.download = `${baseName}${ext}`;
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     document.body.removeChild(link);
+
+  //     URL.revokeObjectURL(url);
+  //   } catch (err) {
+  //     console.error("❌ Ошибка при скачивании:", err);
+  //     alert("Не удалось скачать изображение");
+  //   }
+  // };
 
   const getImageName = () => {
     if (image.status === "completed" && showAfter && image.processed) {
@@ -72,7 +114,7 @@ export default function ImageCard({ image, removeImage }) {
   return (
     <div className="bg-gray-900/50 backdrop-blur-sm rounded-xl overflow-hidden border border-purple-800/30 hover:border-purple-600/50 transition-all duration-200">
       <div className="aspect-video bg-gray-800 relative overflow-hidden">
-        <Image
+        <img
           src={getImageSrc()}
           alt={image.name}
           className="w-full h-full object-cover"
@@ -80,8 +122,8 @@ export default function ImageCard({ image, removeImage }) {
             background:
               "repeating-conic-gradient(#e5e5e5 0% 25%, #f5f5f5 0% 50%) 50% / 20px 20px",
           }}
-          width={192}
-          height={192}
+          // width={192}
+          // height={192}
         />
         {image.status === "processing" && (
           <div className="absolute inset-0 bg-black/80 flex items-center justify-center">
