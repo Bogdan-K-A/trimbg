@@ -19,6 +19,12 @@
 
 # production
 /build
+# Build
+frontrend/.next/
+frontrend/out/
+frontrend/.turbo/
+backend/dist/
+backend/build/
 
 # misc
 .DS_Store
