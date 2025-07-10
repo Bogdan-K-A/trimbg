@@ -14,7 +14,7 @@ jobs:
       - name: Clone Repo
         uses: actions/checkout@v3
 
-      - name: DEBUG: Show first lines of private key
+      - name: DEBUG Show first lines of private key
         run: |
           echo "=== FIRST 5 LINES OF REMOTE_KEY ==="
           echo "${{ secrets.REMOTE_KEY }}" | head -n 5
