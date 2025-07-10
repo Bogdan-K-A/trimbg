@@ -14,9 +14,10 @@ jobs:
       - name: Clone Repo
         uses: actions/checkout@v3
 
-      - name: DEBUG: Show key
+      - name: DEBUG: Show first lines of private key
         run: |
-            echo "${{ secrets.REMOTE_KEY }}" | head -n 5
+          echo "=== FIRST 5 LINES OF REMOTE_KEY ==="
+          echo "${{ secrets.REMOTE_KEY }}" | head -n 5
 
       - name: Deploy to VPS
         uses: appleboy/ssh-action@master
