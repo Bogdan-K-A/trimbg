@@ -1,0 +1,32 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Clone Repo
+        uses: actions/checkout@v3
+
+      - name: Deploy to VPS
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.REMOTE_KEY }}
+          script: |
+            cd /var/www/trimbg.pro
+            git pull origin main
+            npm install
+            npm run build
+            cd backend
+            npm install
+            pm2 restart backend || pm2 start index.js --name backend
+            cd ..
+            pm2 restart frontend || pm2 start npm --name frontend -- start
