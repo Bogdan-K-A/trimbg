@@ -23,7 +23,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.REMOTE_HOST }}
-          username: ${{ secrets.REMOTE_USER }}
+          username: ${{ secrets.REMOTE_USER2 }}
           key: ${{ secrets.REMOTE_KEY }}
           script: |
             echo "📁 Клонируем проект если не существует"
