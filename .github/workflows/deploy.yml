@@ -21,20 +21,26 @@ jobs:
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.REMOTE_KEY }}
           script: |
+            echo "📁 Клонируем проект если не существует"
+            if [ ! -d /var/www/fastuser/data/www/trimbg.pro ]; then
+              git clone https://github.com/Bogdan-K-A/trimbg.git /var/www/fastuser/data/www/trimbg.pro
+            fi
+
             cd /var/www/fastuser/data/www/trimbg.pro
 
-            echo "🔄 Pulling latest code..."
+            echo "🔄 Обновляем код"
             git pull origin main
 
-            echo "📦 Installing frontend dependencies..."
+            echo "📦 Устанавливаем зависимости"
             npm install
 
-            echo "🔨 Building frontend..."
+            echo "🏗️ Сборка фронтенда"
             npm run build
 
-            echo "📦 Installing backend dependencies..."
+            echo "📦 Устанавливаем зависимости backend"
             cd backend
             npm install
+            cd ..
 
-            echo "🚀 Restarting backend with PM2..."
+            echo "🚀 Запускаем через PM2"
             pm2 startOrReload ecosystem.config.js
