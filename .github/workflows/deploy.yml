@@ -28,7 +28,7 @@ jobs:
           script: |
             echo "📁 Клонируем проект если не существует"
             if [ ! -d /var/www/fastuser/data/www/trimbg.pro ]; then
-              git clone https://github.com/Bogdan-K-A/trimbg.git /var/www/fastuser/data/www/trimbg.pro
+              git clone git@github.com:Bogdan-K-A/trimbg.git /var/www/fastuser/data/www/trimbg.pro
             fi
 
             cd /var/www/fastuser/data/www/trimbg.pro
