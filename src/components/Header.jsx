@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import {
-  Check,
   Image as ImageIcon,
   Zap,
   FileImage,
@@ -11,28 +10,18 @@ import {
   Home,
   Video,
   ImageIcon as Gallery,
-  Globe,
-  ChevronDown,
   DollarSign,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { handleScrollLinkClick } from "@/utils/navRoutScroll";
+import LanguageBar from "./LanguageBar/LanguageBar";
 
 const Header = () => {
   const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
-  const [showLanguageDropdown, setShowLanguageDropdown] = useState(false);
-  const [language, setLanguage] = useState("ru");
   const [isMobile, setIsMobile] = useState(false);
-
-  const languages = [
-    { code: "ru", name: "Русский", flag: "🇷🇺" },
-    { code: "en", name: "English", flag: "🇺🇸" },
-  ];
-
-  // const isHome = router.pathname === "/";
 
   const menuItems = [
     { type: "scroll", to: "home", label: "Главная", icon: Home },
@@ -47,23 +36,6 @@ const Header = () => {
       icon: DollarSign,
     },
   ];
-
-  // Close language dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (showLanguageDropdown && !event.target.closest(".language-dropdown")) {
-        setShowLanguageDropdown(false);
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, [showLanguageDropdown]);
-
-  const changeLanguage = (newLanguage) => {
-    setLanguage(newLanguage);
-    setShowLanguageDropdown(false);
-  };
 
   useEffect(() => {
     setIsMobile(window.innerWidth <= 992);
@@ -87,6 +59,9 @@ const Header = () => {
               <span className="text-xl font-bold bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent">
                 TrimBg.pro
               </span>
+            </div>
+            <div className="md:hidden bg-gray-900/95 backdrop-blur-md border-t border-purple-800/30 z-10">
+              <LanguageBar />
             </div>
 
             {/* Desktop Menu */}
@@ -125,44 +100,7 @@ const Header = () => {
               })}
 
               {/* Language Selector */}
-              <div className="relative language-dropdown">
-                <button
-                  onClick={() => setShowLanguageDropdown(!showLanguageDropdown)}
-                  className="flex items-center space-x-2 px-3 py-2 text-gray-300 hover:text-white hover:bg-purple-600/20 rounded-lg transition-all duration-200"
-                >
-                  <Globe className="w-4 h-4" />
-                  <span className="text-sm font-medium">
-                    {languages.find((lang) => lang.code === language)?.flag}
-                  </span>
-                  <ChevronDown
-                    className={`w-4 h-4 transition-transform duration-200 ${
-                      showLanguageDropdown ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                {showLanguageDropdown && (
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-gray-900/95 backdrop-blur-md border border-purple-800/30 rounded-lg shadow-xl overflow-hidden">
-                    {languages.map((lang) => (
-                      <button
-                        key={lang.code}
-                        onClick={() => changeLanguage(lang.code)}
-                        className={`w-full flex items-center space-x-3 px-4 py-3 text-left hover:bg-purple-600/20 transition-all duration-200 ${
-                          language === lang.code
-                            ? "bg-purple-600/30 text-purple-300"
-                            : "text-gray-300 hover:text-white"
-                        }`}
-                      >
-                        <span className="text-lg">{lang.flag}</span>
-                        <span className="font-medium">{lang.name}</span>
-                        {language === lang.code && (
-                          <Check className="w-4 h-4 ml-auto text-purple-400" />
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <LanguageBar />
             </div>
 
             {/* Mobile Menu Button */}
@@ -219,9 +157,10 @@ const Header = () => {
               {/* Mobile Language Selector */}
               <div className="border-t border-purple-800/30 pt-2 mt-2">
                 <div className="px-3 py-2 text-xs font-medium text-gray-400 uppercase tracking-wider">
-                  {language === "ru" ? "Язык" : "Language"}
+                  {/* {language === "uk" ? "Мова" : "Language"} */}
                 </div>
-                {languages.map((lang) => (
+
+                {/* {languages.map((lang) => (
                   <button
                     key={lang.code}
                     onClick={() => {
@@ -240,7 +179,7 @@ const Header = () => {
                       <Check className="w-4 h-4 ml-auto text-purple-400" />
                     )}
                   </button>
-                ))}
+                ))} */}
               </div>
             </div>
           </div>
