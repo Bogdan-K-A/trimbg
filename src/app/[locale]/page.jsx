@@ -303,7 +303,7 @@ export default function Home() {
           </div>
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent h-15">
             {/* <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent"> */}
-            TrimBg.pro
+            TrimBg.proOOO
           </h1>
           <p className="text-xl text-gray-300 mb-2">
             Профессиональное удаление фона с изображений
