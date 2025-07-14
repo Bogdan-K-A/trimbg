@@ -15,6 +15,8 @@ import VideoSection from "@/components/VideoSection";
 import ExamplesSection from "@/components/ExamplesSection";
 import transliterate from "@/utils/transliterate";
 
+const mainUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export default function Home() {
   /* ------------------------ Состояния ------------------------ */
 
@@ -152,14 +154,10 @@ export default function Home() {
 
         abortControllerRef.current = new AbortController();
 
-        const response = await axios.post(
-          "http://localhost:4000/api/process",
-          form,
-          {
-            headers: { "Content-Type": "multipart/form-data" },
-            signal: abortControllerRef.current.signal,
-          }
-        );
+        const response = await axios.post(`${mainUrl}/api/process`, form, {
+          headers: { "Content-Type": "multipart/form-data" },
+          signal: abortControllerRef.current.signal,
+        });
 
         const { files } = response.data;
         allProcessed.push(...files);
@@ -213,12 +211,10 @@ export default function Home() {
         .map((f) => f.processedName);
 
       if (processedNames.length) {
-        const zipRes = await axios.post(
-          "http://localhost:4000/api/generate-zip",
-          {
-            files: processedNames,
-          }
-        );
+        const zipRes = await axios.post(`${mainUrl}/api/generate-zip`, {
+          files: processedNames,
+        });
+
         zipRef.current = zipRes.data.zipUrl;
       }
 

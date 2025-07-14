@@ -6,7 +6,9 @@ import {
   Image as ImageIcon,
   Trash2,
 } from "lucide-react";
-import { saveAs } from "file-saver";
+import axios from "axios";
+
+const mainUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const ProcessingControls = ({
   images,
@@ -20,15 +22,29 @@ const ProcessingControls = ({
     setImages([]);
   };
 
-  const downloadAll = () => {
+  const downloadAll = async () => {
     if (!zipRef.current) return alert("Обработка не завершена");
 
-    const link = document.createElement("a");
-    link.href = zipRef.current;
-    link.download = "images.zip";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      const response = await axios.get(`${mainUrl}${zipRef.current}`, {
+        responseType: "blob",
+      });
+
+      const blob = response.data;
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "images.zip";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("❌ Ошибка при скачивании ZIP:", err);
+      alert("ZIP-файл не найден или ошибка при скачивании");
+    }
   };
 
   return (

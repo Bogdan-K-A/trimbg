@@ -7,7 +7,9 @@ import multer from "multer";
 
 import { clearOldFiles } from "./utils/clearOldFiles.js";
 import processRouter from "./routes/process.js";
-import downloadRouter from "./routes/download.js";
+import downloadSingle from "./routes/downloadSingle.js";
+import downloadZip from "./routes/downloadZip.js";
+// import downloadRouter from "./routes/download.js";
 import zipRouter from "./routes/zip.js";
 
 const app = express();
@@ -28,8 +30,10 @@ app.use(express.json()); // Позволяет Express читать JSON-тел�
 
 // 🔀 Подключение роутов с префиксом /api
 app.use("/api", processRouter); // Обработка изображений
-app.use("/api", downloadRouter); // Скачивание изображений и ZIP-архивов
+// app.use("/api", downloadRouter); // Скачивание изображений и ZIP-архивов
 app.use("/api", zipRouter); // Генерация ZIP-файлов
+app.use("/api", downloadSingle);
+app.use("/api", downloadZip);
 
 // ▶️ Запуск сервера
 app.listen(PORT, () => {

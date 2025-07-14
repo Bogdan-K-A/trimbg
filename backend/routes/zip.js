@@ -17,7 +17,7 @@ router.post("/generate-zip", async (req, res) => {
   if (!files?.length)
     return res.status(400).json({ error: "No files provided" });
 
-  const zipFilename = `images-${randomUUID()}.zip`;
+  const zipFilename = `images.zip`;
   const zipPath = path.join(zipDir, zipFilename);
   const archive = archiver("zip", { zlib: { level: 9 } });
   const output = createWriteStream(zipPath);

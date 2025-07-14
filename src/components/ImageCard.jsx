@@ -4,13 +4,15 @@ import Image from "next/image";
 import { Download, Trash2, Check } from "lucide-react";
 import axios from "axios";
 
+const mainUrl = process.env.NEXT_PUBLIC_API_URL;
+
 export default function ImageCard({ image, removeImage }) {
   const [showAfter, setShowAfter] = useState(true);
 
   const getImageSrc = () => {
     //   показывает фотку до/после
     if (image.status === "completed" && showAfter && image.processed) {
-      return `http://localhost:4000${image.processed}`;
+      return `${mainUrl}${image.processed}`;
       // return image.processed;
     }
     return image.original;
@@ -26,7 +28,7 @@ export default function ImageCard({ image, removeImage }) {
       // Убедимся, что путь абсолютный
       const fileUrl = image.processed.startsWith("http")
         ? image.processed
-        : `http://localhost:4000${image.processed}`; // 👈 меняем порт
+        : `${mainUrl}${image.processed}`; // 👈 меняем порт
 
       const response = await axios.get(fileUrl, {
         responseType: "blob",
