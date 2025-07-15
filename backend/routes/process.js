@@ -102,7 +102,7 @@ router.post("/process", upload.array("files", 5), async (req, res) => {
           });
         } catch (err) {
           console.error(`❌ Error: ${file.originalname}`, err);
-
+          res.status(500).json({ error: err.message });
           results.push({
             originalName: file.originalname,
             error: true,

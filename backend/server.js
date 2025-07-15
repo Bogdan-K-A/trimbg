@@ -35,6 +35,20 @@ app.use("/api", zipRouter); // Генерация ZIP-файлов
 app.use("/api", downloadSingle);
 app.use("/api", downloadZip);
 
+app.get("/api/test-rembg", async (req, res) => {
+  const { execFile } = await import("child_process");
+  const { promisify } = await import("util");
+  const execFileAsync = promisify(execFile);
+  try {
+    const result = await execFileAsync("/home/magystruser/.local/bin/rembg", [
+      "--help",
+    ]);
+    res.send("Rembg works:\n" + result.stdout);
+  } catch (err) {
+    res.status(500).send("Rembg error:\n" + err.message);
+  }
+});
+
 // ▶️ Запуск сервера
 app.listen(PORT, () => {
   console.log(`🚀 Server running at http://localhost:${PORT}`);
