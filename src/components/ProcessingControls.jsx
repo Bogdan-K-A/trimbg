@@ -8,10 +8,7 @@ import {
 } from "lucide-react";
 import axios from "axios";
 
-const mainUrl =
-  process.env.NEXT_PUBLIC_LOCAL_URL === undefined
-    ? process.env.NEXT_PUBLIC_API_URL
-    : process.env.NEXT_PUBLIC_LOCAL_URL;
+const mainUrl = process.env.NEXT_PUBLIC_API_URL;
 
 const ProcessingControls = ({
   images,

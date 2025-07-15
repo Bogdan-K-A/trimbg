@@ -15,10 +15,8 @@ import VideoSection from "@/components/VideoSection";
 import ExamplesSection from "@/components/ExamplesSection";
 import transliterate from "@/utils/transliterate";
 
-const mainUrl =
-  process.env.NEXT_PUBLIC_LOCAL_URL === undefined
-    ? process.env.NEXT_PUBLIC_API_URL
-    : process.env.NEXT_PUBLIC_LOCAL_URL;
+const mainUrl = process.env.NEXT_PUBLIC_API_URL;
+console.log("mainUrl", mainUrl);
 
 export default function Home() {
   /* ------------------------ Состояния ------------------------ */
@@ -156,7 +154,7 @@ export default function Home() {
         form.append("format", settings.outputFormat);
 
         abortControllerRef.current = new AbortController();
-
+        console.log("mainUrl", mainUrl);
         const response = await axios.post(`${mainUrl}/api/process`, form, {
           headers: { "Content-Type": "multipart/form-data" },
           signal: abortControllerRef.current.signal,
