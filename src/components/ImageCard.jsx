@@ -4,7 +4,10 @@ import Image from "next/image";
 import { Download, Trash2, Check } from "lucide-react";
 import axios from "axios";
 
-const mainUrl = process.env.NEXT_PUBLIC_API_URL;
+const mainUrl =
+  process.env.NEXT_PUBLIC_LOCAL_URL === undefined
+    ? process.env.NEXT_PUBLIC_API_URL
+    : process.env.NEXT_PUBLIC_LOCAL_URL;
 
 export default function ImageCard({ image, removeImage }) {
   const [showAfter, setShowAfter] = useState(true);

@@ -15,7 +15,10 @@ import VideoSection from "@/components/VideoSection";
 import ExamplesSection from "@/components/ExamplesSection";
 import transliterate from "@/utils/transliterate";
 
-const mainUrl = process.env.NEXT_PUBLIC_API_URL;
+const mainUrl =
+  process.env.NEXT_PUBLIC_LOCAL_URL === undefined
+    ? process.env.NEXT_PUBLIC_API_URL
+    : process.env.NEXT_PUBLIC_LOCAL_URL;
 
 export default function Home() {
   /* ------------------------ Состояния ------------------------ */
@@ -299,7 +302,7 @@ export default function Home() {
           </div>
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent h-15">
             {/* <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-pink-400 to-purple-400 bg-clip-text text-transparent"> */}
-            TrimBg.proOOO
+            TrimBg.pro
           </h1>
           <p className="text-xl text-gray-300 mb-2">
             Профессиональное удаление фона с изображений
