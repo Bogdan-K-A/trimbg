@@ -3,10 +3,14 @@ const withNextIntl = createNextIntlPlugin("./src/app/i18n.js");
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  // env: {
-  // NEXT_PUBLIC_API_URL: "http://localhost:4000",
-  // NEXT_PUBLIC_API_URL: "https://trimbg.pro",
-  // },
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "http://127.0.0.1:4000/api/:path*",
+      },
+    ];
+  },
   images: {
     remotePatterns: [
       {
