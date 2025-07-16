@@ -3,10 +3,10 @@ const withNextIntl = createNextIntlPlugin("./src/app/i18n.js");
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
-  env: {
-    // NEXT_PUBLIC_API_URL: "http://localhost:4000",
-    NEXT_PUBLIC_API_URL: "https://trimbg.pro",
-  },
+  // env: {
+  // NEXT_PUBLIC_API_URL: "http://localhost:4000",
+  // NEXT_PUBLIC_API_URL: "https://trimbg.pro",
+  // },
   images: {
     remotePatterns: [
       {

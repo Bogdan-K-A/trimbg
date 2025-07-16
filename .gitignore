@@ -21,11 +21,6 @@
 # production
 /build
 
-# Build
-backend/dist/
-backend/build/
-%userprofile%.ssh
-
 # misc
 .DS_Store
 *.pem
