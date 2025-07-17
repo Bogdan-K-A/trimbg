@@ -13,11 +13,6 @@ const execFileAsync = promisify(execFile);
 // ✅ Выбор пути к rembg в зависимости от платформы
 const rembgCmd =
   process.platform === "win32" ? "C:\\Python310\\Scripts\\rembg.exe" : "rembg";
-// const rembgCmd =
-//   process.platform === "win32"
-//     ? "C:\\Python310\\Scripts\\rembg.exe"
-//     : "/home/magystuser/.local/bin/rembg";
-// const rembgCmd = "/home/magystuser/.local/bin/rembg";
 
 const router = express.Router();
 const uploadDir = "tmp";
@@ -55,7 +50,6 @@ router.post("/process", upload.array("files", 5), async (req, res) => {
         const tempOutputPng = `${file.path}-nobg.png`;
 
         try {
-          // Конвертация в PNG для rembg
           let sharpInput = sharp(await fs.promises.readFile(file.path));
           const metadata = await sharpInput.metadata();
 
@@ -66,15 +60,11 @@ router.post("/process", upload.array("files", 5), async (req, res) => {
           }
 
           await sharpInput.png().toFile(tempInputPng);
-
-          // Удаление фона через rembg CLI
           await execFileAsync(rembgCmd, ["i", tempInputPng, tempOutputPng]);
 
-          // Чтение результата
           let img = sharp(tempOutputPng);
 
           if (mirror === "true") img = img.flop();
-
           if (!useAlpha) img = img.flatten({ background: bg });
 
           switch (format) {
@@ -95,11 +85,6 @@ router.post("/process", upload.array("files", 5), async (req, res) => {
 
           await fs.promises.writeFile(outputPath, await img.toBuffer());
 
-          // Удаление всех временных файлов
-          for (const f of [file.path, tempInputPng, tempOutputPng]) {
-            if (fs.existsSync(f)) await fs.promises.unlink(f);
-          }
-
           results.push({
             originalName: file.originalname,
             processedName: filename,
@@ -107,13 +92,13 @@ router.post("/process", upload.array("files", 5), async (req, res) => {
           });
         } catch (err) {
           console.error(`❌ Error: ${file.originalname}`, err);
-          res.status(500).json({ error: err.message });
+
           results.push({
             originalName: file.originalname,
             error: true,
             message: err.message,
           });
-
+        } finally {
           for (const f of [file.path, tempInputPng, tempOutputPng]) {
             if (fs.existsSync(f)) await fs.promises.unlink(f);
           }
@@ -122,6 +107,17 @@ router.post("/process", upload.array("files", 5), async (req, res) => {
     )
   );
 
+  // ✅ Проверка: если все файлы с ошибкой — вернуть 500
+  const allFailed = results.every((r) => r.error);
+
+  if (allFailed) {
+    return res.status(500).json({
+      error: "All files failed to process",
+      files: results,
+    });
+  }
+
+  // ✅ Иначе — вернуть успешный ответ с результатами
   res.json({ files: results });
 });
 
