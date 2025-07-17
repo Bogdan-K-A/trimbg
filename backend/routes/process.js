@@ -11,12 +11,12 @@ import { promisify } from "util";
 const execFileAsync = promisify(execFile);
 
 // ✅ Выбор пути к rembg в зависимости от платформы
-// const rembgCmd =
-//   process.platform === "win32" ? "C:\\Python310\\Scripts\\rembg.exe" : "rembg";
 const rembgCmd =
-  process.platform === "win32"
-    ? "C:\\Python310\\Scripts\\rembg.exe"
-    : "/home/magystuser/.local/bin/rembg";
+  process.platform === "win32" ? "C:\\Python310\\Scripts\\rembg.exe" : "rembg";
+// const rembgCmd =
+//   process.platform === "win32"
+//     ? "C:\\Python310\\Scripts\\rembg.exe"
+//     : "/home/magystuser/.local/bin/rembg";
 // const rembgCmd = "/home/magystuser/.local/bin/rembg";
 
 const router = express.Router();
