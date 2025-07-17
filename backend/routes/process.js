@@ -12,7 +12,9 @@ const execFileAsync = promisify(execFile);
 
 // ✅ Выбор пути к rembg в зависимости от платформы
 const rembgCmd =
-  process.platform === "win32" ? "C:\\Python310\\Scripts\\rembg.exe" : "rembg";
+  process.platform === "win32"
+    ? "C:\\Python310\\Scripts\\rembg.exe"
+    : "/home/magystuser/.local/bin/rembg";
 
 const router = express.Router();
 const uploadDir = "tmp";
