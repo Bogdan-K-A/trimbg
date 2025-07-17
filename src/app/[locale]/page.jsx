@@ -154,7 +154,7 @@ export default function Home() {
         form.append("format", settings.outputFormat);
 
         abortControllerRef.current = new AbortController();
-        console.log("mainUrl", mainUrl);
+
         const response = await axios.post(`${mainUrl}/api/process`, form, {
           headers: { "Content-Type": "multipart/form-data" },
           signal: abortControllerRef.current.signal,

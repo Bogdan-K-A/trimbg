@@ -2,8 +2,8 @@
 import express from "express";
 import cors from "cors";
 import fs, { mkdirSync } from "fs";
-import path from "path";
-import multer from "multer";
+// import path from "path";
+// import multer from "multer";
 
 import { clearOldFiles } from "./utils/clearOldFiles.js";
 import processRouter from "./routes/process.js";
@@ -34,20 +34,6 @@ app.use("/api", processRouter); // Обработка изображений
 app.use("/api", zipRouter); // Генерация ZIP-файлов
 app.use("/api", downloadSingle);
 app.use("/api", downloadZip);
-
-app.get("/api/test-rembg", async (req, res) => {
-  const { execFile } = await import("child_process");
-  const { promisify } = await import("util");
-  const execFileAsync = promisify(execFile);
-  try {
-    const result = await execFileAsync("/home/magystruser/.local/bin/rembg", [
-      "--help",
-    ]);
-    res.send("Rembg works:\n" + result.stdout);
-  } catch (err) {
-    res.status(500).send("Rembg error:\n" + err.message);
-  }
-});
 
 // ▶️ Запуск сервера
 app.listen(PORT, () => {
