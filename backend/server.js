@@ -2,7 +2,7 @@
 import express from "express";
 import cors from "cors";
 import fs, { mkdirSync } from "fs";
-// import path from "path";
+import path from "path";
 // import multer from "multer";
 
 import { clearOldFiles } from "./utils/clearOldFiles.js";
@@ -16,9 +16,9 @@ const app = express();
 const PORT = 4000;
 
 // 📁 Создание директорий, если они не существуют
-const uploadDir = "tmp";
-const processedDir = "processed";
-const zipDir = "zips";
+const uploadDir = path.join(__dirname, "tmp");
+const processedDir = path.join(__dirname, "processed");
+const zipDir = path.join(__dirname, "zips");
 
 mkdirSync(uploadDir, { recursive: true });
 mkdirSync(processedDir, { recursive: true });
